@@ -1,4 +1,5 @@
 var itinerary = require('../models/itinerary');
+var user = require('../models/user');
 
 function ItineraryController () {
 
@@ -6,7 +7,7 @@ function ItineraryController () {
 
 ItineraryController.prototype.getById = function(idUser, callback) {
 	console.log(idUser);
-	itinerary.findOne({User: idUser},function (error, itinerary) {
+	itinerary.find({UserId: idUser},function (error, itinerary) {
 		if(error){
 			callback(null, error);
 		}else{

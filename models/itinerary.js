@@ -9,9 +9,7 @@ var itinerarySchema = new mongoose.Schema({
 	FinalDestination: String,
 	DepartureTime: String,
 	ArrivalTime: String,
-	User: {
-		type: schema.Types.ObjectId, ref: 'user'
-	}
+	UserId: String
 });
 
 // Return model
