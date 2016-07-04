@@ -6,12 +6,10 @@ function ItineraryController () {
 }
 
 ItineraryController.prototype.getById = function(idUser, callback) {
-	console.log(idUser);
 	itinerary.find({UserId: idUser},function (error, itinerary) {
 		if(error){
 			callback(null, error);
 		}else{
-			console.log(itinerary);
 			callback(itinerary);
 		}
 	})
