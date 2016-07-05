@@ -19,5 +19,8 @@ app.use('/api', require('./routes/itinerary'));
 app.use('/api', require('./routes/signup'));
 
 // Start Server
-app.listen(3000);
-console.log('API running on port 3000')
+var port = Number(process.env.PORT || 8080);
+
+app.listen(port, function () {
+	console.log('Server running at port ' + port);
+});
