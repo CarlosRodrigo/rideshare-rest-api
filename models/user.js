@@ -5,7 +5,8 @@ var mongoose = restful.mongoose;
 // Schema
 var userSchema = new mongoose.Schema({
 	name: String,
-	email: String
+	email: String,
+	password: String
 });
 
 // Return model

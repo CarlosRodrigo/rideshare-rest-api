@@ -16,6 +16,7 @@ app.use(bodyParser.json());
 // Routes
 app.use('/api', require('./routes/user'));
 app.use('/api', require('./routes/itinerary'));
+app.use('/api', require('./routes/signup'));
 
 // Start Server
 app.listen(3000);
