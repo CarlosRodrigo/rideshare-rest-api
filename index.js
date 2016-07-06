@@ -2,6 +2,7 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
+var jwt = require('jsonwebtoken');
 
 var config = require('./config');
 
@@ -12,6 +13,36 @@ mongoose.connect(config.database);
 var app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+app.set('superSecret', config.secret);
+global.getSuperSecret = app.get('superSecret');
+
+app.use(function (req, res, next) {
+	if (req.url.indexOf('/login') >= 0 || (req.url.indexOf('/signup') >= 0 && req.method == 'POST')) {
+		next();
+	} else {
+		var token = req.body.token  || req.query.token || req.headers['x-access-token'];
+
+		if (token) {
+			jwt.verify(token, global.getSuperSecret, function (error, decoded) {
+				if (error) {
+					return res.json({
+						success: false,
+						message: 'Token inválido'
+					});
+				} else {
+					req.decoded = decoded;
+					next();
+				}
+			})
+		} else {
+			return res.status(403).send({
+				success: false,
+				message: 'Nenhum token enviado'
+			});
+		}
+	}
+});
 
 // Routes
 app.use('/api', require('./routes/signup'));

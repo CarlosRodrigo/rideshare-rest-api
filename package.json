@@ -7,11 +7,16 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CarlosRodrigo/rideshare-rest-api"
+  },
+  "author": "Carlos Rodrigo",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.15.1",
     "express": "^4.14.0",
+    "jsonwebtoken": "^7.0.1",
     "mongoose": "^4.5.0",
     "node-restful": "^0.2.5"
   }

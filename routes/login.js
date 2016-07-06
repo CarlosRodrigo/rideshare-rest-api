@@ -1,6 +1,7 @@
 // Dependencies
 var express = require('express');
 var router = express.Router();
+var jwt = require('jsonwebtoken');
 
 // Controllers
 var UserController = require('../controllers/user');
@@ -12,7 +13,15 @@ router.route('/login').post(function (req, res) {
 			res.status(401);
 			res.send(error);
 		} else {
-			res.json(user);
+			console.log(user._id);
+			var token = jwt.sign(user._id, global.getSuperSecret, {
+				expiresIn: '1h'
+			});
+
+			res.json({
+				user: user,
+				token: token
+			});
 		}
 	});
 });
