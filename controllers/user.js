@@ -46,4 +46,22 @@ UserController.prototype.insert = function(_user, callback) {
 	});
 };
 
+UserController.prototype.login = function(_users, callback) {
+	if (_users && _users.email && _users.password) {
+		User.find({ email: _users.email, password: _users.password }, function (error, users) {
+			if (error) {
+				callback(null, error);
+			} else {
+				if (users.length > 0) {
+					callback(users[0]);
+				} else {
+					callback(null, { error: 'Email ou senha inválidos.' });
+				}
+			}
+		});
+	} else {
+		callback(null, { error: 'Email ou senha inválidos.' });
+	}
+};
+
 module.exports = UserController;

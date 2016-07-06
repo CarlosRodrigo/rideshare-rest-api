@@ -14,9 +14,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Routes
+app.use('/api', require('./routes/signup'));
+app.use('/api', require('./routes/login'));
 app.use('/api', require('./routes/user'));
 app.use('/api', require('./routes/itinerary'));
-app.use('/api', require('./routes/signup'));
 
 // Start Server
 var port = Number(process.env.PORT || 8080);
