@@ -49,61 +49,69 @@ ItineraryController.prototype.insert = function(_itinerary, callback) {
 };
 
 ItineraryController.prototype.Closest = function(_itinerary, callback) {
-	var limit = 1;
+	geocoder.geocode(_itinerary.from, function ( err, fromConverter ) {
+		var fromGeoPoint = [fromConverter.results[0].geometry.location.lat, fromConverter.results[0].geometry.location.lng];
+		var limit = 1;
 
-    // get coordinates [ <longitude> , <latitude> ]
-    var coords = [];
-    coords[0] = _itinerary.latitude;
-    coords[1] = _itinerary.longitude;
+	    // get coordinates [ <longitude> , <latitude> ]
+	    var coords = [];
+	    coords[0] = fromGeoPoint[0];
+	    coords[1] = fromGeoPoint[1];
 
-    var isDriver = false;
-    if (_itinerary.isDriver == "false") {
-    	isDriver = true
-    } 
+	    console.log(coords);
 
-    // find a location
-    Itinerary.find({
-    	userId: {$ne: _itinerary.userId},
-    	isDriver: isDriver.toString(),
-    	to: _itinerary.to,
-    	fromGeoPoint: {
-    		$near: coords,
-    	}
-    }).limit(limit).exec(function(error, locations) {
-    	if (error) {
-        	callback(null, error);
-    	}
+	    var isDriver = false;
+	    if (_itinerary.isDriver == "false") {
+	    	isDriver = true
+	    } 
 
-      	callback(locations);
-    });
+	    // find a location
+	    Itinerary.find({
+	    	userId: {$ne: _itinerary.userId},
+	    	isDriver: isDriver.toString(),
+	    	to: _itinerary.to,
+	    	fromGeoPoint: {
+	    		$near: coords,
+	    	}
+	    }).limit(limit).exec(function(error, locations) {
+	    	if (error) {
+	        	callback(null, error);
+	    	}
+
+	      	callback(locations);
+	    });
+	});
 };
 
 ItineraryController.prototype.Closests = function(_itinerary, callback) {
-    // get coordinates [ <longitude> , <latitude> ]
-    var coords = [];
-    coords[0] = _itinerary.latitude;
-    coords[1] = _itinerary.longitude;
+	geocoder.geocode(_itinerary.from, function ( err, fromConverter ) {
+		var fromGeoPoint = [fromConverter.results[0].geometry.location.lat, fromConverter.results[0].geometry.location.lng];
+	    // get coordinates [ <longitude> , <latitude> ]
+	    var coords = [];
+	    coords[0] = fromGeoPoint[0];
+	    coords[1] = fromGeoPoint[1];
 
-    var isDriver = false;
-    if (_itinerary.isDriver == "false") {
-    	isDriver = true
-    } 
+	    var isDriver = false;
+	    if (_itinerary.isDriver == "false") {
+	    	isDriver = true
+	    } 
 
-    // find a location
-    Itinerary.find({
-    	userId: {$ne: _itinerary.userId},
-    	isDriver: isDriver.toString(),
-    	to: _itinerary.to,
-    	fromGeoPoint: {
-    		$near: coords,
-    	}
-    }, function(error, locations) {
-    	if (error) {
-        	callback(null, error);
-    	}
+	    // find a location
+	    Itinerary.find({
+	    	userId: {$ne: _itinerary.userId},
+	    	isDriver: isDriver.toString(),
+	    	to: _itinerary.to,
+	    	fromGeoPoint: {
+	    		$near: coords,
+	    	}
+	    }, function(error, locations) {
+	    	if (error) {
+	        	callback(null, error);
+	    	}
 
-      	callback(locations);
-    });
+	      	callback(locations);
+	    });
+	});
 };
 
 module.exports = ItineraryController;
