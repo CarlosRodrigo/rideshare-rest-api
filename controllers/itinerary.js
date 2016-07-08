@@ -117,15 +117,16 @@ ItineraryController.prototype.Closests = function(_itinerary, callback) {
 ItineraryController.prototype.Distance = function(_itinerary, callback) {
 	var from = _itinerary.fromLat + "," + _itinerary.fromLng;
 	var to = _itinerary.toLat + "," + _itinerary.toLng;
-	requrl = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=|"+from+"&destinations=|" + to;
+	// requrl = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=|"+from+"&destinations=|" + to;
 
-	request(requrl, function (err, res, body){
-		if(!err && res.statusCode == 200){
-			data = JSON.parse(body);
-			var distance = data.rows[0].elements[0].distance.value;
-			callback(distance);
-		}
-	});
+	// request(requrl, function (err, res, body){
+	// 	if(!err && res.statusCode == 200){
+	// 		data = JSON.parse(body);
+	// 		var distance = data.rows[0].elements[0].distance.value;
+	// 		callback(distance);
+	// 	}
+	// });
+	callback(calcDistance(from, to));
 };
 
 ItineraryController.prototype.Duration = function(_itinerary, callback) {
@@ -142,4 +143,42 @@ ItineraryController.prototype.Duration = function(_itinerary, callback) {
 	});
 };
 
+ItineraryController.prototype.CalcFare = function(itineraries, callback) {
+	var itineraryController = new ItineraryController();
+	for (var i = 0; i < itineraries.length - 1; i++) {
+		var itinerary = {
+			fromLat: itineraries[i].fromGeoPoint[0],
+			fromLng: itineraries[i].fromGeoPoint[1],
+			toLat: itineraries[i+1].fromGeoPoint[0],
+			toLng: itineraries[i+1].fromGeoPoint[1]
+		}
+
+		// console.log(itinerary);
+
+		var totalDistance;
+		var totalDuration;
+
+		itineraryController.Distance(itinerary, function(_distance, error){
+			itineraryController.Duration(itinerary, function(_duration, error){
+				totalDistance += _distance;
+				totalDuration += _duration;
+			});	
+		});
+	}
+}
+
+function calcDistance(from, to) {
+	requrl = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=|"+from+"&destinations=|" + to;
+
+	console.log(to);
+
+	request(requrl, function (err, res, body){
+		if(!err && res.statusCode == 200){
+			data = JSON.parse(body);
+			console.log(data);
+			var distance = data.rows[0].elements[0].distance.value;
+			return distance;
+		}
+	});
+} 
 module.exports = ItineraryController;

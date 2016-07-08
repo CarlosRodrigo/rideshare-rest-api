@@ -67,6 +67,17 @@ Itinerary.route('duration.post', function(req, res, next) {
 	});
 });
 
+Itinerary.route('calcFare.post', function(req, res, next) {
+	itineraryController.CalcFare(req.body, function(fares, error){
+		if (error) {
+			res.status(401);
+			res.send(error);
+		} else {
+			res.json(fares);
+		}
+	});
+});
+
 Itinerary.register(router, '/itineraries');
 
 module.exports = router;
