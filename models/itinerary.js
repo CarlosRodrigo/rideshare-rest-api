@@ -5,16 +5,21 @@ var schema = restful.mongoose.Schema;
 
 // Schema
 var itinerarySchema = new mongoose.Schema({
-	StartLocation: String,
-	StartLatitude: String,
-	StartLongitude: String,
-	FinalDestination: String,
-	FinalLatitude: String,
-	FinalLongitude: String,
-	Day: String,
-	DepartureTime: String,
-	ArrivalTime: String,
-	UserId: String
+	from: String,
+	fromGeoPoint: {
+	    type: [Number],  // [<longitude>, <latitude>]
+	    index: '2d'      // create the geospatial index
+    },
+	to: String,
+	toGeoPoint: {
+	    type: [Number],  // [<longitude>, <latitude>]
+	    index: '2d'      // create the geospatial index
+    },
+	day: String,
+	departureTime: String,
+	arrivalTime: String,
+	userId: String,
+	isDriver: Boolean
 });
 
 // Return model
