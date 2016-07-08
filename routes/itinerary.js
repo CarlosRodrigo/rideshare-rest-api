@@ -45,6 +45,28 @@ Itinerary.route('closests.post', function(req, res, next) {
 	});
 });
 
+Itinerary.route('distance.post', function(req, res, next) {
+	itineraryController.Distance(req.body, function (distance, error) {
+		if (error) {
+			res.status(401);
+			res.send(error);
+		} else {
+			res.json(distance);
+		}
+	});
+});
+
+Itinerary.route('duration.post', function(req, res, next) {
+	itineraryController.Duration(req.body, function (distance, error) {
+		if (error) {
+			res.status(401);
+			res.send(error);
+		} else {
+			res.json(distance);
+		}
+	});
+});
+
 Itinerary.register(router, '/itineraries');
 
 module.exports = router;

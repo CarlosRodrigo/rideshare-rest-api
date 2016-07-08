@@ -114,4 +114,32 @@ ItineraryController.prototype.Closests = function(_itinerary, callback) {
 	});
 };
 
+ItineraryController.prototype.Distance = function(_itinerary, callback) {
+	var from = _itinerary.fromLat + "," + _itinerary.fromLng;
+	var to = _itinerary.toLat + "," + _itinerary.toLng;
+	requrl = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=|"+from+"&destinations=|" + to;
+
+	request(requrl, function (err, res, body){
+		if(!err && res.statusCode == 200){
+			data = JSON.parse(body);
+			var distance = data.rows[0].elements[0].distance.value;
+			callback(distance);
+		}
+	});
+};
+
+ItineraryController.prototype.Duration = function(_itinerary, callback) {
+	var from = _itinerary.fromLat + "," + _itinerary.fromLng;
+	var to = _itinerary.toLat + "," + _itinerary.toLng;
+	requrl = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=|"+from+"&destinations=|" + to;
+
+	request(requrl, function (err, res, body){
+		if(!err && res.statusCode == 200){
+			data = JSON.parse(body);
+			var duration = data.rows[0].elements[0].duration.value;
+			callback(duration);
+		}
+	});
+};
+
 module.exports = ItineraryController;
